@@ -14,7 +14,6 @@ CITIES = {
     "BUCHAREST": "https://code.s3.yandex.net/async-module/bucharest-response.json",
     "ROMA": "https://code.s3.yandex.net/async-module/roma-response.json",
     "CAIRO": "https://code.s3.yandex.net/async-module/cairo-response.json",
-
     "GIZA": "https://code.s3.yandex.net/async-module/giza-response.json",
     "MADRID": "https://code.s3.yandex.net/async-module/madrid-response.json",
     "TORONTO": "https://code.s3.yandex.net/async-module/toronto-response.json"
