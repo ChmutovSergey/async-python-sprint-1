@@ -1,3 +1,5 @@
+import logging
+
 CITIES = {
     "MOSCOW": "https://code.s3.yandex.net/async-module/moscow-response.json",
     "PARIS": "https://code.s3.yandex.net/async-module/paris-response.json",
@@ -16,19 +18,42 @@ CITIES = {
     "CAIRO": "https://code.s3.yandex.net/async-module/cairo-response.json",
     "GIZA": "https://code.s3.yandex.net/async-module/giza-response.json",
     "MADRID": "https://code.s3.yandex.net/async-module/madrid-response.json",
-    "TORONTO": "https://code.s3.yandex.net/async-module/toronto-response.json"
+    "TORONTO": "https://code.s3.yandex.net/async-module/toronto-response.json",
 }
+
+ERR_MESSAGE_TEMPLATE = "Something wrong. Please contact with mentor."
+
+START_TIME = 8
+END_TIME = 20
+
+CONDITIONS = (
+    "clear",
+    "partly-cloudy",
+    "cloudy",
+    "overcast",
+)
+
+RESULT_FILE_NAME = "analyzed_data.json"
+XLSX_FILE_NAME = "analyzed_data_file.xlsx"
+COLUMNS_NAME = "ABCDEFGHIJ"
 
 MIN_MAJOR_PYTHON_VER = 3
 MIN_MINOR_PYTHON_VER = 9
+
+logging.basicConfig(
+    filename="forecasting.log",
+    format="%(asctime)s::%(levelname)s::%(message)s",
+    level="DEBUG",
+)
+logger = logging.getLogger("forecasting")
 
 
 def check_python_version():
     import sys
 
     if (
-        sys.version_info.major < MIN_MAJOR_PYTHON_VER
-        or sys.version_info.minor < MIN_MINOR_PYTHON_VER
+            sys.version_info.major < MIN_MAJOR_PYTHON_VER
+            or sys.version_info.minor < MIN_MINOR_PYTHON_VER
     ):
         raise Exception(
             "Please use python version >= {}.{}".format(

@@ -1,6 +1,3 @@
-import subprocess
-
-
 def check_python_version():
     from utils import check_python_version
 

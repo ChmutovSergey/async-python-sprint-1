@@ -3,9 +3,6 @@ import logging
 from http import HTTPStatus
 from urllib.request import urlopen
 
-ERR_MESSAGE_TEMPLATE = "Unexpected error: {error}"
-
-
 logger = logging.getLogger()
 
 
@@ -29,7 +26,6 @@ class YandexWeatherAPI:
             return data
         except Exception as ex:
             logger.error(ex)
-            raise Exception(ERR_MESSAGE_TEMPLATE.format(error=ex))
 
     @staticmethod
     def get_forecasting(url: str):
