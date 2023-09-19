@@ -15,7 +15,7 @@ def forecast_weather():
     with ThreadPoolExecutor() as pool:
         forecasts = pool.map(DataFetchingTask().make_request, CITIES.items())
 
-    logger.debug("Running ProcessPoolExecutor() for %s cities models")
+    logger.debug("Running ProcessPoolExecutor() for cities models")
     with ProcessPoolExecutor() as pool:
         data = pool.map(class_for_calculations.run, list(filter(None, forecasts)))
     result_data = class_for_calculations.adding_rating(list(data))
