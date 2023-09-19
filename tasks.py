@@ -133,7 +133,7 @@ class DataCalculationTask:
         for element in data:
             element.rating = dict_rating[element.city]
 
-        result = [element.dict() for element in data]
+        result = [element.model_dump() for element in data]
         logger.debug("Converting models to a dictionary")
 
         return result
