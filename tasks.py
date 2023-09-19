@@ -8,7 +8,7 @@ import openpyxl
 from openpyxl import Workbook
 from openpyxl.styles import Border, Side
 
-from external.client import YandexWeatherBaseAPI
+from external.client import YandexWeatherAPI
 from models import CityModel, FinalOutputModel, CombinedWeatherConditionsModel, DayWeatherConditionsModel
 from utils import START_TIME, END_TIME, CONDITIONS, RESULT_FILE_NAME, XLSX_FILE_NAME, COLUMNS_NAME
 
@@ -32,7 +32,7 @@ class DataFetchingTask:
     """
     Получение данных через API Яндекс.Погоды
     """
-    yw_api: YandexWeatherBaseAPI = YandexWeatherBaseAPI()
+    yw_api: YandexWeatherAPI = YandexWeatherAPI()
 
     def make_request(self, city: Tuple[str, ...]) -> CityModel:
         """
