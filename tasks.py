@@ -2,7 +2,6 @@ import json
 import logging
 from dataclasses import dataclass
 from threading import RLock
-from typing import Any, Dict, List, Tuple, Union
 
 import openpyxl
 from openpyxl import Workbook
@@ -34,7 +33,7 @@ class DataFetchingTask:
     """
     yw_api: YandexWeatherAPI = YandexWeatherAPI()
 
-    def make_request(self, city: Tuple[str, ...]) -> CityModel:
+    def make_request(self, city: tuple[str, ...]) -> CityModel:
         """
         Метод для получения данных по API
         """
@@ -52,9 +51,8 @@ class DataCalculationTask:
     """
     Вычисление погодных параметров
     """
-
     @staticmethod
-    def __additional_calculating(temp_data: List[Union[int, float]]) -> float:
+    def additional_calculating(temp_data: list[int | float]) -> float:
         """
         Вычисление средних показателей с округлением
         """
@@ -83,11 +81,10 @@ class DataCalculationTask:
             weather_data.append(
                 DayWeatherConditionsModel(
                     date=day.date,
-                    daily_avg_temp=self.__additional_calculating(result_temp_for_day),
+                    daily_avg_temp=self.additional_calculating(result_temp_for_day),
                     clear_weather_cond=count_clear_cond
                 )
             )
-
         return CombinedWeatherConditionsModel(
             city=city_data.city,
             data=weather_data,
@@ -105,7 +102,7 @@ class DataCalculationTask:
                 total_avg_clear_weather_cond += element.clear_weather_cond
 
         logger.debug("Calculation of averages for city: %s", data.city)
-        total_avg_temperature = self.__additional_calculating(list_avg_temp)
+        total_avg_temperature = self.additional_calculating(list_avg_temp)
 
         logger.debug("Creating and returning a FinalOutputModel to for city: %s", data.city)
         return FinalOutputModel(
@@ -117,7 +114,7 @@ class DataCalculationTask:
         )
 
     @staticmethod
-    def adding_rating(data: list[FinalOutputModel]) -> List[Dict[str, Any]]:
+    def adding_rating(data: list[FinalOutputModel]) -> list[dict[str, any]]:
         """
         Добавление рейтинга города
         """
@@ -158,7 +155,7 @@ class DataAggregationTask:
     Объединение вычисленных данных
     """
     lock: RLock
-    data: List[Dict[str, Any]]
+    data: list[dict[str, any]]
 
     def save_results_as_json(self):
         """
@@ -199,7 +196,7 @@ class DataAggregationTask:
         logger.debug("Saving xlsx table with column names")
 
     @staticmethod
-    def preparing_data_for_insertion(element: dict) -> Tuple[List, ...]:
+    def preparing_data_for_insertion(element: dict) -> tuple[list, ...]:
         """
         Подготовка данных для вставки в таблицу
         """
@@ -222,7 +219,7 @@ class DataAggregationTask:
         logger.info("Return prepared data")
         return row_1, row_2
 
-    def filling_in_table(self, element: Union[List, Tuple]):
+    def filling_in_table(self, element: [list | tuple]):
         """Вставка данных в таблицу"""
         logger.debug("Blocking a thread anf inserting data for a city: %s", element[0][0])
         with self.lock:
@@ -271,7 +268,7 @@ class DataAnalyzingTask:
     """
     Финальный анализ и получение результата
     """
-    data: List[Dict[str, Any]]
+    data: list[dict[str, any]]
 
     def get_result(self) -> str:
         """
